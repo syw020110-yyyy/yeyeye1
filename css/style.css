@@ -88,6 +88,158 @@ body {
 }
 
 /* ==========================================================================
+   Splash Intro Screen (모바일 첫 진입 인트로 화면)
+   ========================================================================== */
+.splash-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 90px 24px 38px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+  transform: scale(1.03);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0;
+  text-align: center;
+  animation: splashContentFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes splashContentFadeIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.splash-icon-squircle {
+  width: 96px;
+  height: 96px;
+  background: #FFFFFF;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(45, 90, 67, 0.12);
+  box-shadow: 0 16px 36px rgba(45, 90, 67, 0.08), 0 4px 14px rgba(0, 0, 0, 0.04);
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.splash-emoji-stack {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-emoji-stack .emoji-map {
+  font-size: 40px;
+  position: absolute;
+  left: 3px;
+  top: 5px;
+  transform: rotate(-6deg);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
+}
+
+.splash-emoji-stack .emoji-detective {
+  font-size: 36px;
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+}
+
+.splash-brand-title {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #2D5A43;
+  margin: 0 0 8px 0;
+}
+
+.splash-version-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(45, 90, 67, 0.08);
+  color: #2D5A43;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  letter-spacing: -0.2px;
+  border: 1px solid rgba(45, 90, 67, 0.14);
+}
+
+.splash-loading-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.splash-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #2D5A43;
+  animation: splashPulse 1.6s infinite ease-in-out;
+}
+
+@keyframes splashPulse {
+  0% { transform: scale(0.8); opacity: 0.4; box-shadow: 0 0 0 0 rgba(45, 90, 67, 0.5); }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 6px rgba(45, 90, 67, 0); }
+  100% { transform: scale(0.8); opacity: 0.4; box-shadow: 0 0 0 0 rgba(45, 90, 67, 0); }
+}
+
+.splash-loading-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748B;
+  letter-spacing: -0.2px;
+}
+
+.splash-skip-guide {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #94A3B8;
+  letter-spacing: -0.2px;
+  transition: color 0.2s;
+}
+
+.splash-skip-guide:hover {
+  color: #64748B;
+}
+
+/* ==========================================================================
    Top Header & Navigation Bar
    ========================================================================== */
 .top-header-wrapper {

@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" />
   
   <!-- App Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20260922_01">
+  <link rel="stylesheet" href="css/style.css?v=20260922_03">
   <script>
     if (window.location.protocol === 'file:') {
       window.addEventListener('DOMContentLoaded', function() {
@@ -48,6 +48,26 @@
 <body>
   <div class="app-container">
     
+    <!-- Splash Intro Screen (모바일 첫 진입 인트로 화면) -->
+    <div class="splash-screen" id="splashScreen">
+      <div class="splash-content">
+        <div class="splash-icon-squircle">
+          <div class="splash-emoji-stack">
+            <span class="emoji-map">🗺️</span>
+            <span class="emoji-detective">🕵️</span>
+          </div>
+        </div>
+        <h2 class="splash-brand-title">LOCAL PROTECTOR</h2>
+        <div class="splash-version-pill">📍 서촌 · 북촌 ver.</div>
+        
+        <div class="splash-loading-wrap">
+          <span class="splash-pulse-dot"></span>
+          <span class="splash-loading-text">골목길을 탐색하는 중...</span>
+        </div>
+      </div>
+      <div class="splash-skip-guide">화면을 탭하여 바로 시작하기</div>
+    </div>
+
     <!-- Top Header & Controls -->
     <header class="top-header-wrapper">
       <div class="brand-row">
@@ -191,6 +211,6 @@
   <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.21/leaflet-maplibre-gl.js"></script>
   
   <!-- Application Entry -->
-  <script type="module" src="js/app.js?v=20260922_02"></script>
+  <script type="module" src="js/app.js?v=20260922_03"></script>
 </body>
 </html>

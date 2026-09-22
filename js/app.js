@@ -57,7 +57,32 @@ class App {
     // 5. 전역 이벤트 리스너 바인딩
     this.bindGlobalEvents();
 
+    // 6. 스플래시 인트로 화면 제어 (2초 유지 & 탭 시 즉시 스킵)
+    this.initSplashScreen();
+
     console.log('🗺️ LOCAL PROTECTOR (로컬 프로텍터) 서촌·안국 실시간 혼잡도 서비스 시작');
+  }
+
+  initSplashScreen() {
+    const splash = document.getElementById('splashScreen');
+    if (!splash) return;
+
+    let isDismissed = false;
+    const dismiss = () => {
+      if (isDismissed) return;
+      isDismissed = true;
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 650);
+    };
+
+    // 2초(2000ms) 후 자동 부드러운 페이드아웃
+    setTimeout(dismiss, 2000);
+
+    // 화면 터치/클릭 시 즉시 페이드아웃 스킵
+    splash.addEventListener('click', dismiss);
+    splash.addEventListener('touchstart', dismiss, { passive: true });
   }
 
   updateCongestionScores() {
