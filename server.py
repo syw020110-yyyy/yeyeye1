@@ -54,14 +54,19 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
 if __name__ == '__main__':
+    if sys.platform == 'win32':
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
     http.server.ThreadingHTTPServer.allow_reuse_address = True
     server = http.server.ThreadingHTTPServer(('0.0.0.0', PORT), CustomHandler)
-    print(f"🚀 LOCAL PROTECTOR Server running on http://localhost:{PORT}")
+    print(f"LOCAL PROTECTOR Server running on http://localhost:{PORT}")
     if '--open' in sys.argv:
         webbrowser.open(f'http://localhost:{PORT}')
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\n🛑 Server stopped.")
+        print("\nServer stopped.")
         server.server_close()
 
