@@ -85,6 +85,189 @@ class App {
     splash.addEventListener('touchstart', dismiss, { passive: true });
   }
 
+  /**
+   * 바텀 시트 인터랙티브 스와이프/드래그 제스처 컨트롤러
+   * 모바일 터치 스와이프 및 PC 마우스 드래그를 모두 지원
+   */
+  initBottomSheetGesture() {
+    const sheet = document.getElementById('bottomSheet');
+    const handle = document.getElementById('sheetHandle');
+    const header = sheet?.querySelector('.sheet-header');
+    const listContainer = document.getElementById('spotListContainer');
+    if (!sheet) return;
+
+    let startY = 0;
+    let initialTranslateY = 0;
+    let isDragging = false;
+    let startTime = 0;
+    let isExpanded = sheet.classList.contains('expanded');
+
+    // 접힘(Collapsed) 상태의 translateY (상단 헤더 약 88px만 노출)
+    const getCollapsedY = () => {
+      const sheetHeight = sheet.offsetHeight || 400;
+      return Math.max(180, sheetHeight - 88);
+    };
+
+    const setTranslateY = (y, withTransition = false) => {
+      if (withTransition) {
+        sheet.style.transition = 'transform 0.36s cubic-bezier(0.16, 1, 0.3, 1)';
+      } else {
+        sheet.style.transition = 'none';
+      }
+      sheet.style.transform = `translateY(${y}px)`;
+    };
+
+    const expandSheet = () => {
+      isExpanded = true;
+      sheet.classList.add('expanded');
+      sheet.classList.remove('dragging');
+      setTranslateY(0, true);
+    };
+
+    const collapseSheet = () => {
+      isExpanded = false;
+      sheet.classList.remove('expanded');
+      sheet.classList.remove('dragging');
+      setTranslateY(getCollapsedY(), true);
+    };
+
+    // 초기 상태 반영
+    if (isExpanded) {
+      expandSheet();
+    } else {
+      collapseSheet();
+    }
+
+    const onStart = (clientY) => {
+      isDragging = true;
+      startY = clientY;
+      startTime = Date.now();
+      
+      sheet.classList.add('dragging');
+
+      // 현재 transform translateY 추출
+      const style = window.getComputedStyle(sheet);
+      const matrix = new DOMMatrixReadOnly(style.transform);
+      initialTranslateY = matrix.m42;
+      
+      sheet.style.transition = 'none';
+    };
+
+    const onMove = (clientY, e) => {
+      if (!isDragging) return;
+      const deltaY = clientY - startY;
+
+      // 리스트 내부 스크롤 중일 때 위로 드래그하는 동작은 리스트 스크롤에 양보
+      if (isExpanded && listContainer && listContainer.scrollTop > 0 && deltaY < 0) {
+        return;
+      }
+
+      let newY = initialTranslateY + deltaY;
+      const collapsedY = getCollapsedY();
+
+      // 상단 0px 위로 올릴 때 고무줄 저항
+      if (newY < 0) {
+        newY = newY * 0.22;
+      } else if (newY > collapsedY + 40) {
+        newY = collapsedY + (newY - collapsedY) * 0.22;
+      }
+
+      setTranslateY(newY, false);
+      if (e && e.cancelable) e.preventDefault();
+    };
+
+    const onEnd = (clientY) => {
+      if (!isDragging) return;
+      isDragging = false;
+      sheet.classList.remove('dragging');
+
+      const deltaY = clientY - startY;
+      const deltaTime = Math.max(1, Date.now() - startTime);
+      const velocity = deltaY / deltaTime; // px/ms
+      const collapsedY = getCollapsedY();
+
+      // 단순 탭/클릭 판정 (이동거리 6px 미만, 시간 300ms 미만)
+      if (Math.abs(deltaY) < 6 && deltaTime < 300) {
+        if (isExpanded) {
+          collapseSheet();
+        } else {
+          expandSheet();
+        }
+        return;
+      }
+
+      // 빠른 스와이프 제스처 (Flick) 감지
+      if (velocity < -0.3) {
+        expandSheet(); // 위로 빠르게 스와이프 -> 확장
+      } else if (velocity > 0.3) {
+        collapseSheet(); // 아래로 빠르게 스와이프 -> 축소
+      } else {
+        // 위치 기반 스냅 (절반 기준)
+        const style = window.getComputedStyle(sheet);
+        const matrix = new DOMMatrixReadOnly(style.transform);
+        const currentPos = matrix.m42;
+
+        if (currentPos < collapsedY * 0.5) {
+          expandSheet();
+        } else {
+          collapseSheet();
+        }
+      }
+    };
+
+    // 터치 이벤트 리스너 (모바일)
+    const dragTargets = [handle, header].filter(Boolean);
+    dragTargets.forEach(el => {
+      el.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          onStart(e.touches[0].clientY);
+        }
+      }, { passive: true });
+    });
+
+    // 리스트 상단(scrollTop 0)에서 아래로 당길 때 바텀시트 제스처 연동
+    listContainer?.addEventListener('touchstart', (e) => {
+      if (listContainer.scrollTop <= 0 && e.touches.length === 1) {
+        onStart(e.touches[0].clientY);
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (isDragging && e.touches.length === 1) {
+        onMove(e.touches[0].clientY, e);
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchend', (e) => {
+      if (isDragging) {
+        const touch = e.changedTouches[0];
+        onEnd(touch ? touch.clientY : startY);
+      }
+    });
+
+    // 마우스 드래그 이벤트 리스너 (PC / 웹)
+    dragTargets.forEach(el => {
+      el.addEventListener('mousedown', (e) => {
+        if (e.button === 0) {
+          onStart(e.clientY);
+          e.preventDefault();
+        }
+      });
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        onMove(e.clientY, e);
+      }
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (isDragging) {
+        onEnd(e.clientY);
+      }
+    });
+  }
+
   updateCongestionScores() {
     const publicAreaScore = this.state.activeRegion === 'anguk' 
       ? PUBLIC_CONGESTION_FEED.areas.anguk.score 
@@ -322,12 +505,8 @@ class App {
       );
     });
 
-    // 3. 바텀 시트 드래그 / 확장 토글
-    const sheetHandle = document.getElementById('sheetHandle');
-    const bottomSheet = document.getElementById('bottomSheet');
-    sheetHandle?.addEventListener('click', () => {
-      bottomSheet?.classList.toggle('expanded');
-    });
+    // 3. 바텀 시트 모바일 터치 스와이프 & 웹 마우스 드래그 제스처 초기화
+    this.initBottomSheetGesture();
 
     // 4. 공공데이터 LIVE 대시보드 모달 열기 버튼
     const openDashboardModal = () => {

@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" />
   
   <!-- App Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=20260922_03">
+  <link rel="stylesheet" href="css/style.css?v=20260922_05">
   <script>
     if (window.location.protocol === 'file:') {
       window.addEventListener('DOMContentLoaded', function() {
@@ -76,12 +76,8 @@
           <h1 class="brand-title">LOCAL PROTECTOR</h1>
         </a>
 
-        <!-- 권역 탭 (전체 / 서촌 / 안국) -->
-        <nav class="region-tabs" aria-label="탐색 권역">
-          <button class="region-tab-btn active" data-region="all">전체</button>
-          <button class="region-tab-btn" data-region="seochon">서촌</button>
-          <button class="region-tab-btn" data-region="anguk">안국·북촌</button>
-        </nav>
+        <!-- 서촌 · 북촌 버전 표시 뱃지 -->
+        <div class="header-version-pill">📍 서촌 · 북촌 ver.</div>
       </div>
 
       <!-- 공공 실시간 인구 및 날씨 라이브 바 -->
@@ -93,32 +89,9 @@
         <div id="regionWeatherBadge">🌤️ 맑음 22℃</div>
       </div>
 
-      <!-- 공공데이터 LIVE 대시보드 바로가기 바 (포인트 남색 계열 버튼) -->
-      <div class="dashboard-banner-row">
-        <button class="btn-open-dashboard-wide" id="btnOpenDashboard" title="서울시 실시간 공공데이터 대시보드 열기">
-          <div class="dash-btn-left">
-            <span class="dash-icon">📊</span>
-            <span class="dash-title">서울시 공공데이터 LIVE 대시보드</span>
-          </div>
-          <span class="dash-arrow">실시간 현황 ➔</span>
-        </button>
-      </div>
-
       <!-- 목적별 카테고리 필터 바 -->
       <div class="category-bar" id="categoryBar">
         <!-- JS 렌더링: 전체, 한옥카페, 독립서점, 전시, 쉼터 등 -->
-      </div>
-
-      <!-- 최근 일주일 신규 업데이트 바로가기 버튼 (매주 월요일 기준) -->
-      <div class="new-update-banner-row">
-        <button class="btn-new-update-chip" id="btnNewUpdate" title="최근 일주일간 신규 업데이트된 장소 확인 (매주 월요일 갱신)">
-          <div class="new-chip-left">
-            <span class="new-chip-sparkle">✨</span>
-            <span class="new-chip-badge">NEW UPDATE</span>
-            <span class="new-chip-text">최근 일주일 신규 장소 목록</span>
-          </div>
-          <span class="new-chip-arrow">보기 ➔</span>
-        </button>
       </div>
     </header>
 
@@ -211,6 +184,6 @@
   <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.21/leaflet-maplibre-gl.js"></script>
   
   <!-- Application Entry -->
-  <script type="module" src="js/app.js?v=20260922_03"></script>
+  <script type="module" src="js/app.js?v=20260922_05"></script>
 </body>
 </html>

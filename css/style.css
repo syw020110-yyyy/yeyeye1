@@ -270,13 +270,6 @@ body {
   text-decoration: none;
 }
 
-.brand-logo {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-}
-
 .brand-icon {
   font-size: 18px;
   letter-spacing: -2px;
@@ -291,30 +284,19 @@ body {
   text-transform: uppercase;
 }
 
-/* Region Tabs (전체 / 서촌 / 안국) */
-.region-tabs {
-  display: flex;
-  background-color: #F1F5F9;
-  padding: 2px;
+/* Header Version Pill (📍 서촌 · 북촌 ver.) */
+.header-version-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(45, 90, 67, 0.08);
+  color: #2D5A43;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3.5px 10px;
   border-radius: var(--radius-full);
-}
-
-.region-tab-btn {
-  border: none;
-  background: transparent;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-sub);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.region-tab-btn.active {
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(45, 90, 67, 0.16);
+  letter-spacing: -0.2px;
+  white-space: nowrap;
 }
 
 /* Live Public Indicator Badge */
@@ -908,47 +890,74 @@ body {
 }
 
 /* ==========================================================================
-   Bottom Sheet (Collapsible Feed Drawer)
+   Bottom Sheet (Collapsible Feed Drawer & Smooth Swipe Gesture)
    ========================================================================== */
 .bottom-sheet {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 380px;
+  height: 400px;
   max-height: 80vh;
   background: #FFFFFF;
   border-top-left-radius: var(--radius-lg);
   border-top-right-radius: var(--radius-lg);
-  box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 -8px 28px rgba(15, 23, 42, 0.15);
   z-index: 800;
   display: flex;
   flex-direction: column;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: translateY(220px);
+  will-change: transform;
+  transform: translateY(300px);
 }
 
 .bottom-sheet.expanded {
   transform: translateY(0);
 }
 
+.bottom-sheet.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .sheet-handle-bar {
-  padding: 8px 0 4px;
+  padding: 10px 0 6px;
   display: flex;
   justify-content: center;
-  cursor: pointer;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sheet-handle-bar:active {
+  cursor: grabbing;
 }
 
 .sheet-handle {
-  width: 40px;
-  height: 4px;
-  border-radius: 2px;
+  width: 44px;
+  height: 4.5px;
+  border-radius: 3px;
   background: #CBD5E1;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.sheet-handle-bar:hover .sheet-handle {
+  background: #94A3B8;
+  transform: scaleY(1.2);
 }
 
 .sheet-header {
-  padding: 4px 16px 8px;
+  padding: 4px 16px 10px;
   border-bottom: 1px solid var(--border-subtle);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sheet-header:active {
+  cursor: grabbing;
 }
 
 .sheet-title-row {
