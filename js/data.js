@@ -8,11 +8,11 @@ export const REGIONS = {
 
 export const CATEGORIES = [
   { id: 'all', name: '전체', icon: 'compass', emoji: '✨' },
-  { id: 'cafe', name: '한옥 카페', icon: 'coffee', emoji: '☕' },
+  { id: 'cafe', name: '한옥 카페', icon: 'coffee', emoji: '☕️' },
   { id: 'book', name: '독립서점·문학', icon: 'book-open', emoji: '📚' },
-  { id: 'gallery', name: '전시·갤러리', icon: 'palette', emoji: '🎨' },
+  { id: 'gallery', name: '전시·갤러리', icon: 'palette', emoji: '🖼️' },
   { id: 'relax', name: '조용한 쉼터·정원', icon: 'trees', emoji: '🌿' },
-  { id: 'dining', name: '로컬 식당·티바', icon: 'utensils', emoji: '🍱' }
+  { id: 'dining', name: '로컬 식당·티바', icon: 'utensils', emoji: '🍽️' }
 ];
 
 export const MOCK_USER_LOCATIONS = [

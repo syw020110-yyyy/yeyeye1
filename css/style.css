@@ -414,56 +414,118 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Custom Marker Styling */
+/* ==========================================================================
+   Custom Marker Styling ('Emoji Mini Capsule Pin' & Category Filtering)
+   ========================================================================== */
+.leaflet-capsule-marker-container {
+  background: transparent !important;
+  border: none !important;
+  width: auto !important;
+  height: auto !important;
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
 .custom-spot-marker {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s ease;
+  will-change: transform, opacity;
 }
 
-.marker-pin {
+.marker-capsule {
   background: #FFFFFF;
-  border: 2px solid var(--smooth-color);
+  border: 1.5px solid #10B981;
   border-radius: var(--radius-full);
-  padding: 3px 8px 3px 6px;
+  padding: 2.5px 7px 2.5px 5.5px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  gap: 3.5px;
+  box-shadow: 0 2px 7px rgba(15, 23, 42, 0.12), 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
+  user-select: none;
 }
 
-.marker-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
+.marker-emoji {
+  font-size: 11.5px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .marker-name {
   font-size: 11px;
   font-weight: 700;
-  color: var(--text-main);
-  max-width: 90px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #0F172A;
+  letter-spacing: -0.3px;
+  line-height: 1.1;
 }
 
-.custom-spot-marker.crowded .marker-pin {
-  border-color: var(--crowded-color);
+/* 혼잡도 상태별 테두리 및 은은한 그림자 */
+.custom-spot-marker.smooth .marker-capsule {
+  border-color: #10B981;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.16), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.custom-spot-marker.moderate .marker-pin {
-  border-color: var(--moderate-color);
+.custom-spot-marker.moderate .marker-capsule {
+  border-color: #F59E0B;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.16), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.custom-spot-marker:hover .marker-pin,
-.custom-spot-marker.selected .marker-pin {
-  transform: translateY(-4px) scale(1.08);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.22);
+.custom-spot-marker.crowded .marker-capsule {
+  border-color: #EF4444;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.16), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* 상단 카테고리 필터 미선택 마커 반투명 처리 */
+.custom-spot-marker.dimmed {
+  opacity: 0.25;
+  transform: scale(0.93);
+  filter: grayscale(0.25);
+}
+
+.custom-spot-marker.dimmed:hover {
+  opacity: 0.85;
+  transform: scale(1.0);
+  filter: none;
+}
+
+/* 상단 카테고리 필터 선택 마커 강조 */
+.custom-spot-marker.category-highlight {
+  opacity: 1;
+}
+
+.custom-spot-marker.category-highlight .marker-capsule {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+
+/* 클릭/상세 선택된 마커 반전 하이라이트 */
+.custom-spot-marker.selected .marker-capsule {
+  transform: translateY(-4px) scale(1.12);
+  background-color: #0F172A;
+  border-color: #0F172A !important;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.35);
+}
+
+.custom-spot-marker.selected .marker-name {
+  color: #FFFFFF;
+}
+
+.custom-spot-marker:hover .marker-capsule {
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.2);
 }
 
 /* User GPS Marker */
@@ -1595,15 +1657,10 @@ body {
   white-space: nowrap;
 }
 
-/* Custom Reported Markers (노란색: 검토 중 ⏳ / 초록색: 정식 등록 ✨) */
-.leaflet-reported-marker-container {
-  background: none;
-  border: none;
-}
-
+/* Custom Reported Markers (미니 캡슐 핀 스타일) */
 .custom-reported-marker {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -1615,35 +1672,44 @@ body {
   z-index: 1000 !important;
 }
 
-.reported-pin {
-  display: flex;
+.reported-capsule {
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 9px;
+  gap: 3.5px;
+  padding: 2.5px 7px 2.5px 5.5px;
   border-radius: var(--radius-full);
   background-color: #FFFFFF;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
   white-space: nowrap;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 7px rgba(15, 23, 42, 0.12);
 }
 
 /* 검토 중 (임시 등록 장소 - 연한 회색 배경 & 점선 테두리) */
-.custom-reported-marker.pending .reported-pin {
-  border: 1.8px dashed #94A3B8;
+.custom-reported-marker.pending .reported-capsule {
+  border: 1.5px dashed #94A3B8;
   background-color: #F8FAFC;
   color: #475569;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 .custom-reported-marker.pending .reported-name {
   color: #334155;
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.custom-reported-marker.pending .reported-emoji {
+  font-size: 11px;
 }
 .custom-reported-marker.pending .reported-vote-badge {
   background-color: #E2E8F0;
   color: #475569;
   border: 1px solid #CBD5E1;
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
 }
 .custom-reported-marker.pending .reported-pulse {
   position: absolute;

@@ -1,14 +1,14 @@
-import { SPOTS_DATA, ALLEYS_DATA, PUBLIC_CONGESTION_FEED, MOCK_USER_LOCATIONS, REGIONS } from './data.js?v=20260915_10';
+import { SPOTS_DATA, ALLEYS_DATA, PUBLIC_CONGESTION_FEED, MOCK_USER_LOCATIONS, REGIONS } from './data.js?v=20260922_02';
 import { 
   calculateRealtimeScore, 
   findAlternativeSpots, 
   calculateDistance, 
   calculateWalkingTime, 
   generateNaverMapWalkUrl
-} from './congestionEngine.js?v=20260915_10';
-import { MapManager } from './mapManager.js?v=20260915_10';
-import { UIManager } from './uiManager.js?v=20260915_10';
-import { ReportManager } from './reportManager.js?v=20260915_10';
+} from './congestionEngine.js?v=20260922_02';
+import { MapManager } from './mapManager.js?v=20260922_02';
+import { UIManager } from './uiManager.js?v=20260922_02';
+import { ReportManager } from './reportManager.js?v=20260922_02';
 
 class App {
   constructor() {
@@ -126,13 +126,14 @@ class App {
 
   handleCategorySelect(catId) {
     this.state.activeCategory = catId;
-    this.mapManager.renderSpots(this.state.spots, catId, this.state.activeSpot?.id);
+    this.mapManager.renderSpots(this.state.spots, catId, this.state.activeSpot?.id, this.state.activeRegion);
     this.uiManager.renderCategoryBar(catId, this.state.spots);
     this.uiManager.renderSpotList(
       this.state.spots,
       this.getUserCoords(),
       catId,
-      this.state.filterOnlySmooth
+      this.state.filterOnlySmooth,
+      this.state.activeRegion
     );
   }
 

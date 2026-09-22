@@ -1,7 +1,7 @@
 // 나비 (NABI) - UI 컴포넌트 렌더러 및 인터랙션 매니저 (Option 3: Editorial Clean & Curation)
 
-import { CATEGORIES, REGIONS, MOCK_USER_LOCATIONS } from './data.js?v=20260915_10';
-import { getCongestionMeta, calculateDistance, calculateWalkingTime } from './congestionEngine.js?v=20260915_10';
+import { CATEGORIES, REGIONS, MOCK_USER_LOCATIONS } from './data.js?v=20260922_02';
+import { getCongestionMeta, calculateDistance, calculateWalkingTime } from './congestionEngine.js?v=20260922_02';
 
 export class UIManager {
   constructor(handlers) {
